@@ -11,6 +11,9 @@ public class PlayerGridMovement : MonoBehaviour
     [SerializeField]
     private float moveSpeed;
 
+    [SerializeField]
+    private Rigidbody2D rigidBody2D;
+
     private bool isMoving;
     private Vector3 origPos, targetPos;
     private float timeToMove = 0.2f; //time to move from one grid to another
@@ -18,28 +21,39 @@ public class PlayerGridMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.UpArrow) && !isMoving) {
-            StartCoroutine(MovePlayer(Vector3.up));
-        }
-        if(Input.GetKey(KeyCode.DownArrow) && !isMoving) {
-            StartCoroutine(MovePlayer(Vector3.down));
-        }
-        if(Input.GetKey(KeyCode.LeftArrow) && !isMoving) {
-            StartCoroutine(MovePlayer(Vector3.left));
-        }
-        if(Input.GetKey(KeyCode.RightArrow) && !isMoving) {
-            StartCoroutine(MovePlayer(Vector3.right));
-        }
-        
+        Input.GetAxisRaw("Horizontal");
     }
 
-    private IEnumerator MovePlayer(Vector3 direction) {
+
+
+    void FixedUpdate() // works the same as Update() method, but in a fixed timer manner, avoiding hardware constraints to our code
+    {
+
+        if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && !isMoving)
+        {
+            StartCoroutine(MovePlayer(Vector3.up));
+        }
+        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && !isMoving)
+        {
+            StartCoroutine(MovePlayer(Vector3.down));
+        }
+        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !isMoving)
+        {
+            StartCoroutine(MovePlayer(Vector3.left));
+        }
+        if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && !isMoving)
+        {
+            StartCoroutine(MovePlayer(Vector3.right));
+        }
+    }
+
+    private IEnumerator MovePlayer(Vector3 direction)
+    {
 
         isMoving = true;
 
@@ -48,7 +62,8 @@ public class PlayerGridMovement : MonoBehaviour
         origPos = transform.position;
         targetPos = origPos + direction;
 
-        while(elapsedTime < timeToMove) {
+        while (elapsedTime < timeToMove)
+        {
             transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -60,5 +75,5 @@ public class PlayerGridMovement : MonoBehaviour
 
     }
 
- 
+
 }
