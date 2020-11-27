@@ -14,9 +14,16 @@ public class PlayerGridMovement : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rigidBody2D;
 
+    [SerializeField]
+    private LayerMask raycastLayer;
+
     private bool isMoving;
     private Vector3 origPos, targetPos;
     private float timeToMove = 0.2f; //time to move from one grid to another
+
+
+
+    Vector2 movement;
 
     // Start is called before the first frame update
     void Start()
@@ -26,30 +33,37 @@ public class PlayerGridMovement : MonoBehaviour
 
     void Update()
     {
-        Input.GetAxisRaw("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
+
+
     }
+
+
 
 
 
     void FixedUpdate() // works the same as Update() method, but in a fixed timer manner, avoiding hardware constraints to our code
     {
 
-        if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && !isMoving)
+
+        Debug.DrawRay(transform.position, movement, Color.red);
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, 1, raycastLayer);
+
+        if (hit.collider == null)
         {
-            StartCoroutine(MovePlayer(Vector3.up));
+            if (!isMoving)
+            {
+                StartCoroutine(MovePlayer(movement));
+            }
         }
-        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && !isMoving)
-        {
-            StartCoroutine(MovePlayer(Vector3.down));
-        }
-        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !isMoving)
-        {
-            StartCoroutine(MovePlayer(Vector3.left));
-        }
-        if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && !isMoving)
-        {
-            StartCoroutine(MovePlayer(Vector3.right));
-        }
+
+
+
+
+
     }
 
     private IEnumerator MovePlayer(Vector3 direction)
