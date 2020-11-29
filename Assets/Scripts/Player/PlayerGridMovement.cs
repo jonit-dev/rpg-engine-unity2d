@@ -9,9 +9,6 @@ public class PlayerGridMovement : MonoBehaviour
     // Reference: https://www.youtube.com/watch?v=AiZ4z4qKy44
 
     [SerializeField]
-    private float moveSpeed;
-
-    [SerializeField]
     private Rigidbody2D rigidBody2D;
 
     [SerializeField]
@@ -21,6 +18,12 @@ public class PlayerGridMovement : MonoBehaviour
     private Vector3 origPos, targetPos;
     private float timeToMove = 0.2f; //time to move from one grid to another
 
+    private Vector2 lastMoveDirection;
+
+    private Vector2 moveDirection;
+
+    [SerializeField]
+    private Animator animator;
 
 
     Vector2 movement;
@@ -28,15 +31,31 @@ public class PlayerGridMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     void Update()
     {
+
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
 
+
+        if (movement.sqrMagnitude > 0) // this lastMoveDirection is important for setting our idle animations!
+        {
+            lastMoveDirection = movement;
+        }
+
+        moveDirection = new Vector2(movement.x, movement.y).normalized;
+
+
+
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+        animator.SetFloat("lastMoveHorizontal", lastMoveDirection.x);
+        animator.SetFloat("lastMoveVertical", lastMoveDirection.y);
 
     }
 

@@ -73,7 +73,7 @@
       "dependencies": {}
     },
     "com.unity.2d.tilemap.extras": {
-      "version": "file:C:/Users/joaop/Downloads/2d-extras-master/2d-extras-master",
+      "version": "file:C:/Unity_extras/2d-extras-master/2d-extras-master",
       "depth": 0,
       "source": "local",
       "dependencies": {
