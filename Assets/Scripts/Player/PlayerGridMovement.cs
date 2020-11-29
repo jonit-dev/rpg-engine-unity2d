@@ -35,12 +35,8 @@ public class PlayerGridMovement : MonoBehaviour
 
     void Update()
     {
-
-
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-
-
 
         if (movement.sqrMagnitude > 0) // this lastMoveDirection is important for setting our idle animations!
         {
@@ -48,8 +44,6 @@ public class PlayerGridMovement : MonoBehaviour
         }
 
         moveDirection = new Vector2(movement.x, movement.y).normalized;
-
-
 
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
@@ -78,11 +72,6 @@ public class PlayerGridMovement : MonoBehaviour
                 StartCoroutine(MovePlayer(movement));
             }
         }
-
-
-
-
-
     }
 
     private IEnumerator MovePlayer(Vector3 direction)
@@ -105,8 +94,5 @@ public class PlayerGridMovement : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
-
     }
-
-
 }
